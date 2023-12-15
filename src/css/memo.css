@@ -1,0 +1,35 @@
+.memobox {
+    width: 100%;
+    padding: 20px 50px;
+    background-color: rgba(177, 177, 177, 0.2);
+    margin-block: 50px;
+    border-radius: 10px;
+}
+
+.memobox h1 {
+    font-weight: bold;
+}
+
+.memobox .text {
+    padding-block: 20px;
+    border-top: 1px solid rgba(177, 177, 177, 0.8);
+    border-bottom: 1px solid rgba(177, 177, 177, 0.8);
+    color: rgb(114, 114, 114);
+    font-size: 18px;
+    font-weight: 600;
+    text-align: start;
+    margin-top: 20px;
+}
+
+.memobox .btnbox {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-warning {
+    margin-right: 5px;
+}
+
+.btn-info {
+    color: white;
+}

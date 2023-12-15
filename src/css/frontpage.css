@@ -1,0 +1,80 @@
+section {
+    padding-inline: 70px;
+}
+
+
+/* swiper */
+.swiperbox {
+    width: 100%;
+    height: 800px;
+    margin-inline: auto;
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 24px;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.text {
+    margin-top: 50px;
+    text-align: center;
+}
+
+/* arrow style */
+.arrow {
+    position: absolute;
+    top: 70%;
+    margin-top: -240px;
+    z-index: 10;
+    width: 50px;
+    cursor: pointer;
+}
+
+.arrow.arrow-left {
+    /* top: 650px; */
+    left: 100px;
+    transform: rotate(180deg);
+}
+
+.arrow.arrow-right {
+    /* top: 650px; */
+    right: 100px
+}
+
+
+/* two section */
+h2 {
+    margin-top: 100px;
+}
+
+h5 {
+    border-bottom: 1px solid black;
+}
+
+.parkbox .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 50px;
+    height: 100px;
+    background: gray;
+    border: 2px black solid;
+    border-radius: 50px;
+}
+
+.picturebox img {
+    width: 100%;
+    height: 100%;
+}
