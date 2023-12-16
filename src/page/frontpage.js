@@ -67,7 +67,6 @@ function Front_page() {
         <>
             <section className='frontpage'>
                 <h1 className='text'>下方為輪播圖</h1>
-
                 <div className='swiperbox'>
                     <Swiper
                         modules={[Autoplay, Pagination, Navigation]}
