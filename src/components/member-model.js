@@ -1,56 +1,49 @@
-import { useState, useContext } from 'react';
-import { AllContext } from '../context/Allprovider';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react'
+import { AllContext } from '../context/Allprovider'
+import { useNavigate } from 'react-router-dom'
 
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import axios from "axios"
 
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import axios from "axios";
-
-import Modal from 'react-bootstrap/Modal';
-// 此表為登入+註冊使用
+import Modal from 'react-bootstrap/Modal'
+// the from use add and reset
 function Membermodel({ btntxt = '' }) {
-    // 跳轉用
-    const navigate = useNavigate();
-    // 預設錯誤訊息
+    const navigate = useNavigate()
+    // initial message
     const txterror = {
         Email: 'Well never share your email with anyone else.',
         Password: ''
     }
-
-    // 會員狀態
-    const { member, setMember } = useContext(AllContext)
-
+    const { setMember } = useContext(AllContext)
     // show
     const [show, setShow] = useState(false);
     // data
     const [data, setData] = useState({ Names: '', Email: '', Password: '' })
-    // 錯誤訊息
+    // message
     const [txtError, setTxtError] = useState(txterror)
 
-
-
-    // 純關閉
+    // close and show fun
     const handleClose = () => setShow(false);
     const handleShow = () => { setTxtError(txterror); setShow(true) };
 
-    // 紀錄文字
+    // change txt
     const handleInputChange = (e) => {
-        const { id, value } = e.target;
+        const { id, value } = e.target
         setData((v) => ({
             ...v,
             [id]: value
-        }));
-    };
+        }))
+    }
 
     const emailcheck = (email) => {
-        // 抄別人的
+        // email rule
         const Rule = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        return Rule.test(email);
-    };
+        return Rule.test(email)
+    }
 
     const login = async (data) => {
-        await axios.post('http://localhost:5000/member/login', data)
+        await axios.post(`${process.env.REACT_APP_APIPORT}/member/login`, data)
             .then((res) => {
                 const data = res.data[0][0]
                 if (!data) {
@@ -65,39 +58,37 @@ function Membermodel({ btntxt = '' }) {
                         email: data.email,
                     })
                     setShow(false)
-                    navigate('/todos');
+                    navigate('/todos')
                 }
             });
     }
 
-    // 送出紐
+    // Submit btn
     const handleSubmit = async (data) => {
         if (btntxt !== '登入') {
             if (!emailcheck(data.Email)) {
                 setTxtError((v) => ({ ...v, Email: '請輸入有效電子郵件' }))
             } else {
-                await axios.post('http://localhost:5000/member/regsiter', data)
-                    .then((res) => { console.log(res.data); });
+                await axios.post(`${process.env.REACT_APP_APIPORT}/member/regsiter`, data)
                 login(data)
             }
         } else {
             login(data)
         }
-    };
+    }
 
     return (
         <>
             <Button variant='success' onClick={handleShow}>
                 {btntxt}
             </Button>
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header style={{ display: 'flex', justifyContent: 'center' }}>
                     <Modal.Title>{btntxt !== '登入' ? 'Regsiter' : 'Login'}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form noValidate>
-                        {/* 第一項 Name */}
+                        {/* Name */}
                         {btntxt !== '登入' && (
                             < Form.Group className="mb-3" controlId="Names">
                                 <Form.Label>Name</Form.Label>
@@ -111,7 +102,7 @@ function Membermodel({ btntxt = '' }) {
                                 />
                             </Form.Group>
                         )}
-                        {/* 第二項 email*/}
+                        {/* email*/}
                         <Form.Group className="mb-3" controlId="Email">
                             <Form.Label>Email address</Form.Label>
                             <Form.Control
@@ -125,7 +116,7 @@ function Membermodel({ btntxt = '' }) {
                                 {txtError.Email}
                             </Form.Text>
                         </Form.Group>
-                        {/* 第三項 Password */}
+                        {/* Password */}
                         <Form.Group className="mb-3" controlId="Password">
                             <Form.Label>Password</Form.Label>
                             <Form.Control
@@ -149,8 +140,8 @@ function Membermodel({ btntxt = '' }) {
                 </Modal.Footer>
             </Modal >
         </>
-    );
+    )
 }
-export default Membermodel;
+export default Membermodel
 
 

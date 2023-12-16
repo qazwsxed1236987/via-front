@@ -1,25 +1,27 @@
-import Memo from "../components/memo";
-import Button from 'react-bootstrap/Button';
-import Modal from "../components/memo-model";
-import { useEffect, useState } from 'react';
-import axios from "axios";
+import Memo from "../components/memo"
+import Button from 'react-bootstrap/Button'
+import Modal from "../components/memo-model"
+import { useEffect, useState, useContext } from 'react'
+import { AllContext } from '../context/Allprovider'
+import axios from "axios"
 
 function Todos() {
+    // console.log('REACT_APP_URL', process.env.REACT_APP_APIPORT)
+    const { member } = useContext(AllContext)
 
-    // 存放Memo總資料區塊
+    // initial memo
     const [memos, setMemos] = useState([])
-    // 存放Memo總資料區塊
+    // fliter memo
     const [fliterMemos, setFliterMemos] = useState([])
-    // 當false 未完成 true 完成
+    // change page btn
     const [isComplete, setIsComplete] = useState(false)
 
     useEffect(() => {
-        // 初始頁面
-        handleFormSubmit()
-    }, [])
+        handleFormSubmit(member)
+    }, [member])
+
     useEffect(() => {
-        // console.log(isComplete);
-        let newmemos = fliterMemos
+        let newmemos
         if (isComplete) {
             newmemos = memos.filter((v) => v.complete === 'Y')
         } else {
@@ -28,37 +30,44 @@ function Todos() {
         setFliterMemos(newmemos)
     }, [isComplete, memos])
 
-    // 取得資料用
-    const handleFormSubmit = async () => {
-        try {
-            const res = await axios.get('http://localhost:5000/todos');
-            setMemos(res.data[0]);
-            const newmemos = res.data[0].filter((v) => v.complete === 'N')
-            setFliterMemos(newmemos)
-        } catch (err) {
-            console.log(err);
+    // get data
+    const handleFormSubmit = async (member) => {
+        if (member.name) {
+            try {
+                const res = await axios.post(`${process.env.REACT_APP_APIPORT}/todos`, member);
+                setMemos(res.data[0]);
+                const newmemos = res.data[0].filter((v) => v.complete === 'N')
+                setFliterMemos(newmemos)
+            } catch (err) {
+                console.log(err)
+            }
         }
     };
 
     return (<>
-        <div style={{ paddingInline: '70px' }}>
-            <div className="btnbox">
-                <Modal btntext={'新增'} handleFormSubmit={handleFormSubmit} />
-                <Button variant="secondary" onClick={() => { setIsComplete(!isComplete) }}>
-                    {isComplete ? '切換未完成事項' : '切換已完成事項'}</Button>
+        {member.name ?
+            <div style={{ paddingInline: '70px' }}>
+                {/* change btn */}
+                <div className="btnbox">
+                    <Modal btntext={'新增'} handleFormSubmit={handleFormSubmit} />
+                    <Button variant="secondary" onClick={() => { setIsComplete(!isComplete) }}>
+                        {isComplete ? '切換未完成事項' : '切換已完成事項'}</Button>
+                </div>
+                {/* use db create Memo */}
+                {fliterMemos.map((v) => (
+                    <Memo key={v.id}
+                        id={v.id} title={v.title} settime={v.settime}
+                        text={v.text} toemail={v.toemail} sendtime={v.sendtime}
+                        resettime={v.resettime} complete={v.complete}
+                        handleFormSubmit={handleFormSubmit} setMemos={setMemos}
+                    />
+                ))}
             </div>
-            {/* 利用資料庫來產生Memo */}
-            {fliterMemos.map((v) => (
-                <Memo key={v.id}
-                    id={v.id} title={v.title} settime={v.settime}
-                    text={v.text} toemail={v.toemail} sendtime={v.sendtime}
-                    resettime={v.resettime} complete={v.complete}
-                    handleFormSubmit={handleFormSubmit} setMemos={setMemos}
-                />
-            ))}
-        </div>
+            :
+            <h3 style={{ textAlign: 'center', marginTop: '50px' }}>請登入後查看</h3>
+        }
     </>
-    );
+    )
 }
 
-export default Todos;
+export default Todos

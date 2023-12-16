@@ -6,8 +6,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
-  background-color: transparent;
-
+  background: url('/src/img/backgroup.jpg') center no-repeat fixed;
+  background-size: cover;
 }
 
 

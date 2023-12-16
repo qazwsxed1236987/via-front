@@ -1,7 +1,7 @@
-section {
+.frontpage {
     padding-inline: 70px;
+    margin-bottom: 70px;
 }
-
 
 /* swiper */
 .swiperbox {
@@ -28,36 +28,29 @@ section {
 }
 
 .text {
-    margin-top: 50px;
+    margin-top: 20px;
     text-align: center;
 }
 
 /* arrow style */
 .arrow {
     position: absolute;
-    top: 70%;
-    margin-top: -240px;
+    top: 600px;
     z-index: 10;
     width: 50px;
     cursor: pointer;
 }
 
 .arrow.arrow-left {
-    /* top: 650px; */
     left: 100px;
     transform: rotate(180deg);
 }
 
 .arrow.arrow-right {
-    /* top: 650px; */
     right: 100px
 }
 
-
 /* two section */
-h2 {
-    margin-top: 100px;
-}
 
 h5 {
     border-bottom: 1px solid black;

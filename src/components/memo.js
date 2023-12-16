@@ -1,12 +1,11 @@
-import { useRef, useState, useEffect, useContext } from 'react';
-import { AllContext } from '../context/Allprovider';
+import { useRef, useState, useEffect, useContext } from 'react'
+import { AllContext } from '../context/Allprovider'
 
 import emailjs from '@emailjs/browser'
-import axios from 'axios';
-import Modal from "./memo-model";
+import axios from 'axios'
+import Modal from "./memo-model"
 
-
-import Button from 'react-bootstrap/Button';
+import Button from 'react-bootstrap/Button'
 import '../css/memo.css'
 
 function Memo({
@@ -17,7 +16,7 @@ function Memo({
     toemail = 'N',
     sendtime = '',
     complete = 'N',
-    resettime = '',//只有修正過後才有
+    resettime = '',
     handleFormSubmit,
 }) {
 
@@ -25,41 +24,15 @@ function Memo({
 
     const { member, nowtime } = useContext(AllContext)
 
-    const sendemail = () => {
-        const SERVICE_ID = 'service_9vaq7e9'
-        const TEMPLATE_ID = 'template_9qd529j'
-        const PUBLIC_KEY = 'qjhzRtiuCQ8BS5Pfc'
-        emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-            to_email: 'qazwsxed369@gmail.com',//給誰
-            to_name: 'wei',//給會員名稱
-            from_title: '111',//標題
-            message: '1111'//訊息
-        }, PUBLIC_KEY)
-    }
-
-    // 讓函式只執行一次(重要)
-    const sendEmailRef = useRef(sendemail);
-
-
-
     useEffect(() => {
         if (member.name && data.toemail === 'Y') {
-            if ((nowtime - (new Date(sendtime))) > 0) {
-                sendEmailRef.current();
+            if ((nowtime - (new Date(data.sendtime))) > 0) {
+                sendEmailRef.current()
                 completed(data)
             }
         }
-    }, [nowtime])
-
-    // 刪除用
-    const deleted = async (data) => {
-        const check = window.confirm("確定要刪除嗎?")
-        if (check) {
-            await axios.post('http://localhost:5000/todos/deleted', data)
-            handleFormSubmit()
-        }
-    }
-    //切換用
+    }, [nowtime, member, data])
+    //change fun
     const completed = async (data) => {
         const newdata = {
             ...data,
@@ -67,16 +40,40 @@ function Memo({
             toemail: 'N',
             sendtime: ''
         }
-        console.log(newdata);
         setData(newdata)
-        await axios.post('http://localhost:5000/todos/completed', newdata)
-        handleFormSubmit()
+        await axios.post(`${process.env.REACT_APP_APIPORT}/todos/completed`, newdata)
+        handleFormSubmit(member)
     }
-    // 寄信
+
+    // deleted fun
+    const deleted = async (data) => {
+        const check = window.confirm("確定要刪除嗎?")
+        if (check) {
+            await axios.post(`${process.env.REACT_APP_APIPORT}/todos/deleted`, data)
+            handleFormSubmit(member)
+        }
+    }
+
+    // toemail fun
+    const sendemail = () => {
+        // env化
+        const SERVICE_ID = 'service_9vaq7e9'
+        const TEMPLATE_ID = 'template_9qd529j'
+        const PUBLIC_KEY = 'qjhzRtiuCQ8BS5Pfc'
+
+        emailjs.send(SERVICE_ID, TEMPLATE_ID, {
+            to_email: member.email,
+            to_name: member.name,
+            from_title: data.title,
+            message: data.text
+        }, PUBLIC_KEY)
+    }
+
+    // the fun will use one
+    const sendEmailRef = useRef(sendemail)
 
     return (
         <>
-            {/* 需要擋註冊 */}
             <div className="memobox" >
                 <h1>{title}</h1>
                 <p className='time'>
@@ -103,7 +100,7 @@ function Memo({
                         <Button variant="info"
                             onClick={() => {
                                 completed(data)
-                            }}>{data.complete === 'Y' ? '切換未完成' : '切換已完成'}</Button>
+                            }}>{data.complete === 'Y' ? '切換為未完成' : '切換為已完成'}</Button>
                     </div>
                 </div>
             </div>
@@ -111,4 +108,4 @@ function Memo({
     );
 }
 
-export default Memo;
+export default Memo

@@ -1,48 +1,38 @@
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { AllContext } from '../context/Allprovider'
 
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import Button from 'react-bootstrap/Button'
 
-
-import { AllContext } from '../context/Allprovider';
-
-
-import Button from 'react-bootstrap/Button';
-
-import Membermodel from './member-model';
-
+import Membermodel from './member-model'
 
 function Header() {
 
+    const navigate = useNavigate()
 
-    const navigate = useNavigate();
-
+    // initial nav
     const list = [
         { 'title': 'Todos', 'url': '/todos' },
         { 'title': '首頁', 'url': '/' }]
 
-
-    // 會員狀態
     const { member, setMember } = useContext(AllContext)
 
-    const [navlist, setNavList] = useState(list)
-
-
+    // logout fun
     const logout = () => {
         setMember((v) => ({
             ...v,
             name: '',
             email: ''
         }))
-        navigate('/');
+        navigate('/')
     }
-
 
     return (
         <>
             <header>
                 <section className='navstyle'>
                     <nav className='nav'>
-                        {navlist.map((nav) => {
+                        {list.map((nav) => {
                             return (
                                 <NavLink className="NavLink" to={nav.url} key={nav.title}>
                                     {nav.title}
@@ -72,29 +62,31 @@ function Header() {
                     display:flex;
                     justify-content: space-between;
                     align-items: center;
-                    height:50px
+                    height:100px;
+                    padding:0px 70px;
+
                 }
                 .nav{
                     display:flex;
                     justify-content: space-evenly;
-                    flex-grow: 1
+                    flex-grow: 1;
+                    padding:0 0 0 10%;
                 }
                 .btnbox{
                     display:flex;
                     gap: 5px;
                 }
                 .NavLink{
-                    background: green;
+                    background:#D9B300;
                     padding: 5px 20px;
                     border-radius: 50px;
-                    border: gray 2px solid;
+                    border: gray 1px solid;
                     color:white;
                     text-decoration: none;                    
                 }
             `}</style>
         </>
-
-    );
+    )
 }
 
-export default Header;
+export default Header

@@ -1,20 +1,15 @@
-/* 未啟動狀態  用於當主列表*/
 .nofade {
     opacity: 0;
 }
 
-/* 從左淡入 */
 .left {
     transform: translateX(-50px);
-
 }
 
-/* 從右淡入 */
 .right {
     transform: translateX(50px);
 }
 
-/* 原始位置 */
 .fadeIn {
     opacity: 1;
     transition-delay: .5s;

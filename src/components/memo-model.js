@@ -1,10 +1,10 @@
-import { useState, useContext } from 'react';
-import { AllContext } from '../context/Allprovider';
-import axios from "axios";
+import { useState, useContext } from 'react'
+import { AllContext } from '../context/Allprovider'
+import axios from "axios"
 
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import Modal from 'react-bootstrap/Modal'
 
 function MemoModel({
     id = 1,
@@ -17,66 +17,62 @@ function MemoModel({
     btntext = '',
     color = 'primary'
 }) {
-    // 拆解時間(此時間也是拿來比對的 條件 有會員 且 toemail==Y)
-    const sendcheck = sendtime.split(" ");
+    const sendcheck = sendtime.split(" ")
 
     const { member } = useContext(AllContext)
-    // 顯示
-    const [show, setShow] = useState(false);
+    // show
+    const [show, setShow] = useState(false)
     // data
     const [data, setData] = useState({ title, text, toemail, settime })
     const [timeCheck, setTimecheck] = useState({ date: sendcheck[0], time: sendcheck[1] })
-    // 純關閉
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    // close or show
+    const handleClose = () => setShow(false)
+    const handleShow = () => setShow(true)
 
-    // 紀錄文字
+    // change text fun
     const handleInputChange = (e) => {
-        const { id, value } = e.target;
+        const { id, value } = e.target
         setData((v) => ({
             ...v,
             [id]: value
-        }));
-    };
-    // 紀錄時間
+        }))
+    }
+    // change time fun
     const handleDateChange = (e) => {
-        const { id, value } = e.target;
+        const { id, value } = e.target
         setTimecheck((v) => ({
             ...v,
             [id]: value
-        }));
-    };
-    // 新增紐
+        }))
+    }
+    // add btn
     const addnewdata = async (data) => {
         try {
-            await axios.post('http://localhost:5000/todos/add', data);
-            handleFormSubmit()
+            await axios.post(`${process.env.REACT_APP_APIPORT}/todos/add`, data)
+            handleFormSubmit(member)
         } catch (err) {
-            console.log(err);
+            console.log(err)
         }
     }
-    // 修改紐
+    // reset btn
     const resetnewdata = async (data) => {
+        console.log(data);
         try {
-            console.log(data);
-            // 修改資料
-            await axios.post('http://localhost:5000/todos/reset', data);
-            handleFormSubmit()
+            await axios.post(`${process.env.REACT_APP_APIPORT}/todos/reset`, data)
+            handleFormSubmit(member)
         } catch (err) {
-            console.log(err);
+            console.log(err)
         }
     }
-    // 送出紐
+    // Submit btn
     const handleSubmit = async (txt) => {
         if (data.toemail === 'N') {
             setTimecheck({ date: '', time: '' })
         }
-
         const sendtime = data.toemail === 'Y' ? `${timeCheck.date} ${timeCheck.time}` : ''
-
         const newdata = {
             id: id,
-            names: 'allen', //等有會員時在抓
+            names: member.name,
             title: data.title,
             text: data.text,
             settime: data.settime,
@@ -96,22 +92,20 @@ function MemoModel({
             resetnewdata(newdata)
         }
         setShow(false)
-    };
+    }
 
     return (
         <>
-            {/* 外部按鈕呈現顏色 */}
             <Button variant={color} onClick={handleShow}>
                 {btntext === '新增' ? `${btntext}提醒事項` : btntext}
             </Button>
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{`${btntext}提醒事項`}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form noValidate>
-                        {/* 第一項 */}
+                        {/* title */}
                         <Form.Group className="mb-3" controlId="title">
                             <Form.Label>提醒事項主題</Form.Label>
                             <Form.Control
@@ -122,7 +116,7 @@ function MemoModel({
                                 onChange={handleInputChange}
                             />
                         </Form.Group>
-                        {/* 第二項 */}
+                        {/* text */}
                         <Form.Group className="mb-3" controlId="text">
                             <Form.Label>提醒事項備註</Form.Label>
                             <Form.Control
@@ -131,7 +125,7 @@ function MemoModel({
                                 value={data.text}
                                 onChange={handleInputChange} />
                         </Form.Group>
-                        {/* 缺少發送信件控制項 */}
+                        {/* check to email */}
                         <Form.Group className="mb-3" style={{ display: 'flex', columnGap: '15px' }}>
                             <Form.Label>是否寄出提醒通知信</Form.Label>
                             <Form.Check
@@ -155,7 +149,7 @@ function MemoModel({
                                 }}
                             />
                         </Form.Group>
-
+                        {/* date and time picker */}
                         {data.toemail === 'Y' ?
                             <>
                                 <Form.Group className="mb-3" controlId="date">
@@ -177,7 +171,7 @@ function MemoModel({
                             </> : ''}
                     </Form>
                 </Modal.Body>
-                {/* 按鈕區 */}
+                {/* btn */}
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         關閉
@@ -188,8 +182,8 @@ function MemoModel({
                 </Modal.Footer>
             </Modal >
         </>
-    );
+    )
 }
-export default MemoModel;
+export default MemoModel
 
 
