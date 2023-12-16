@@ -45,6 +45,10 @@ function Todos() {
     };
 
     return (<>
+        <button onClick={() => {
+            axios.get(`${process.env.REACT_APIPORT}/test`)
+                .then((res) => { console.log(res) })
+        }}>111111</button>
         {member.name ?
             <div style={{ paddingInline: '70px' }}>
                 {/* change btn */}
