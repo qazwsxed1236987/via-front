@@ -46,7 +46,7 @@ function Todos() {
 
     return (<>
         <button onClick={() => {
-            axios.get(`${process.env.REACT_APIPORT}/test`)
+            axios.get(`${process.env.APIPORT}/test`)
                 .then((res) => { console.log(res) })
         }}>111111</button>
         {member.name ?
