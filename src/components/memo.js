@@ -41,7 +41,7 @@ function Memo({
             sendtime: ''
         }
         setData(newdata)
-        await axios.post(`${process.env.REACT_APP_APIPORT}/todos/completed`, newdata)
+        await axios.post(`${process.env.REACT_APIPORT}/todos/completed`, newdata)
         handleFormSubmit(member)
     }
 
@@ -49,7 +49,7 @@ function Memo({
     const deleted = async (data) => {
         const check = window.confirm("確定要刪除嗎?")
         if (check) {
-            await axios.post(`${process.env.REACT_APP_APIPORT}/todos/deleted`, data)
+            await axios.post(`${process.env.REACT_APIPORT}/todos/deleted`, data)
             handleFormSubmit(member)
         }
     }
