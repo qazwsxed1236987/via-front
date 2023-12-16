@@ -43,7 +43,7 @@ function Membermodel({ btntxt = '' }) {
     }
 
     const login = async (data) => {
-        await axios.post(`${process.env.REACT_APIPORT}/member/login`, data)
+        await axios.post(`https://via-back.onrender.com/member/login`, data)
             .then((res) => {
                 const data = res.data[0][0]
                 if (!data) {
@@ -69,7 +69,7 @@ function Membermodel({ btntxt = '' }) {
             if (!emailcheck(data.Email)) {
                 setTxtError((v) => ({ ...v, Email: '請輸入有效電子郵件' }))
             } else {
-                await axios.post(`${process.env.REACT_APIPORT}/member/regsiter`, data)
+                await axios.post(`https://via-back.onrender.com/member/regsiter`, data)
                 login(data)
             }
         } else {

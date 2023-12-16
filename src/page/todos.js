@@ -34,7 +34,7 @@ function Todos() {
     const handleFormSubmit = async (member) => {
         if (member.name) {
             try {
-                const res = await axios.post(`${process.env.REACT_APIPORT}/todos`, member);
+                const res = await axios.post(`https://via-back.onrender.com/todos`, member);
                 setMemos(res.data[0]);
                 const newmemos = res.data[0].filter((v) => v.complete === 'N')
                 setFliterMemos(newmemos)

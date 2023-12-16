@@ -48,7 +48,7 @@ function MemoModel({
     // add btn
     const addnewdata = async (data) => {
         try {
-            await axios.post(`${process.env.REACT_APIPORT}/todos/add`, data)
+            await axios.post(`https://via-back.onrender.com/todos/add`, data)
             handleFormSubmit(member)
         } catch (err) {
             console.log(err)
@@ -58,7 +58,7 @@ function MemoModel({
     const resetnewdata = async (data) => {
         console.log(data);
         try {
-            await axios.post(`${process.env.REACT_APIPORT}/todos/reset`, data)
+            await axios.post(`https://via-back.onrender.com/todos/reset`, data)
             handleFormSubmit(member)
         } catch (err) {
             console.log(err)
