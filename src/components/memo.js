@@ -56,10 +56,9 @@ function Memo({
 
     // toemail fun
     const sendemail = () => {
-        // env化
-        const SERVICE_ID = 'service_9vaq7e9'
-        const TEMPLATE_ID = 'template_9qd529j'
-        const PUBLIC_KEY = 'qjhzRtiuCQ8BS5Pfc'
+        const SERVICE_ID = process.env.REACT_APP_SERVICE_ID;
+        const TEMPLATE_ID = process.env.REACT_APP_TEMPLATE_ID;
+        const PUBLIC_KEY = process.env.REACT_APP_PUBLIC_KEY;
 
         emailjs.send(SERVICE_ID, TEMPLATE_ID, {
             to_email: member.email,
