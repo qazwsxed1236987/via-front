@@ -35,9 +35,14 @@ function Todos() {
         if (member.name) {
             try {
                 const res = await axios.post(`https://via-back.onrender.com/todos`, member);
-                setMemos(res.data[0]);
-                const newmemos = res.data[0].filter((v) => v.complete === 'N')
-                setFliterMemos(newmemos)
+                if (res.data.message === 'No data') {
+                    setMemos([]);
+                    setFliterMemos([])
+                } else {
+                    setMemos(res.data[0]);
+                    const newmemos = res.data[0].filter((v) => v.complete === 'N')
+                    setFliterMemos(newmemos)
+                }
             } catch (err) {
                 console.log(err)
             }
