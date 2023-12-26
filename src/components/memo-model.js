@@ -24,7 +24,7 @@ function MemoModel({
     const [show, setShow] = useState(false)
     // data
     const [data, setData] = useState({ title, text, toemail, settime })
-    const [timeCheck, setTimecheck] = useState({ date: sendcheck[0], time: sendcheck[1] })
+    const [timeCheck, setTimecheck] = useState({ date: sendcheck[0] || '', time: sendcheck[1] || '' })
     // close or show
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
@@ -56,7 +56,6 @@ function MemoModel({
     }
     // reset btn
     const resetnewdata = async (data) => {
-        console.log(data);
         try {
             await axios.post(`https://via-back.onrender.com/todos/reset`, data)
             handleFormSubmit(member)
