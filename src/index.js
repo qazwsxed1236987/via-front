@@ -12,9 +12,16 @@ import Header from './components/header';
 //pages
 import Front from './page/frontpage';
 import Todos from './page/todos';
+//io
+import io from 'socket.io-client';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
+const SOCKET_SERVER_URL = 'wss://via-front.onrender.com:10000/ws';
+const socket = io(SOCKET_SERVER_URL);
+socket.on('connect_error', (error) => {
+  console.error('WebSocket 連線失敗:', error);
+});
 
 root.render(
   <React.StrictMode>
